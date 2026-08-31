@@ -1,0 +1,35 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-white: #FFFFFF;
+  --bg-cream: #F7F5F0;
+
+  /* Deep Teal & Mustard palette */
+  --text-dark: #12403B;    /* deep teal - headings, logo, dark UI */
+  --text-muted: #5C6F6A;   /* muted teal-gray - body copy, inactive nav */
+
+  --accent-bright: #E0A458; /* mustard gold - primary buttons, active states */
+  --accent-hover: #C98A3E;  /* darker mustard - hover state */
+
+  --font-main: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

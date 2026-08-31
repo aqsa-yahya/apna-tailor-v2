@@ -1,0 +1,134 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 80px;
+  height: 90px;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid #E3E7E2;
+  position: relative;
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.logo-accent {
+  color: var(--accent-hover);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+/* Default state: same muted color for every link, including Home.
+   Color only changes on hover - no permanent "active" tint. */
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ai-preview-btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-bright);
+  color: var(--text-dark);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.ai-preview-btn-nav:hover {
+  background: var(--accent-hover);
+}
+
+.mobile-only {
+  display: none;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text-dark);
+  border-radius: 2px;
+}
+
+/* ---------- Responsive: mobile dropdown menu ---------- */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0 32px;
+    border-bottom: 1px solid #E3E7E2;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    font-size: 16px;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+    margin-top: 8px;
+  }
+}

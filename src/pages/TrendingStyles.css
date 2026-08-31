@@ -1,0 +1,173 @@
+.trending-page-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  background-color: var(--bg-cream);
+  font-family: var(--font-main);
+  color: var(--text-dark);
+}
+
+.trending-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.trending-header p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.trending-card {
+  background: #FFFFFF;
+  border: 1px solid #E3E7E2;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.trending-card:hover {
+  box-shadow: 0 14px 30px rgba(18, 64, 59, 0.1);
+  transform: translateY(-2px);
+}
+
+.trending-card-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.trending-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.trending-card-body h3 {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.trending-spec-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.trending-spec-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-bottom: 1px dashed #E3E7E2;
+  padding-bottom: 5px;
+}
+
+.trending-spec-list li strong {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.trending-download-btn {
+  display: block;
+  text-align: center;
+  background: var(--text-dark);
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.trending-download-btn:hover {
+  background: #0B2B27;
+}
+
+/* Explore More Inspiration - external links */
+.inspiration-section {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid #E3E7E2;
+  text-align: center;
+}
+
+.inspiration-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.inspiration-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  max-width: 520px;
+  margin: 0 auto 28px;
+}
+
+.inspiration-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.inspiration-card {
+  display: block;
+  background: #FFFFFF;
+  border: 1px solid #E3E7E2;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: left;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.inspiration-card:hover {
+  border-color: var(--accent-bright);
+  box-shadow: 0 10px 24px rgba(18, 64, 59, 0.08);
+}
+
+.inspiration-card h4 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.inspiration-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.inspiration-visit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-hover);
+}
+
+@media (max-width: 640px) {
+  .trending-page-container {
+    padding: 28px 16px 60px;
+  }
+  .trending-card-img {
+    height: 220px;
+  }
+}
