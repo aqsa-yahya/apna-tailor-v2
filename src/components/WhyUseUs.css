@@ -1,0 +1,141 @@
+/* ---------- Why Use ApnaTailor ---------- */
+.why-use-section {
+  background: var(--text-dark);
+  padding: 52px 24px 44px;
+  text-align: center;
+}
+
+.why-use-title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  color: #FFFFFF;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 12px;
+  margin-bottom: 34px;
+}
+
+.why-use-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent-bright);
+}
+
+.why-use-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.why-use-card {
+  color: #FFFFFF;
+}
+
+.why-use-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(224, 164, 88, 0.55);
+  color: var(--accent-bright);
+  margin-bottom: 16px;
+}
+
+.why-use-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.why-use-card h3 {
+  font-size: 16.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.why-use-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* ---------- Perks strip ---------- */
+.perks-strip {
+  background: var(--bg-cream);
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.perks-strip-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.perk-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.perk-icon {
+  display: inline-flex;
+  color: var(--accent-hover);
+}
+
+.perk-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.perk-divider {
+  width: 1px;
+  height: 18px;
+  background: #D8D3C6;
+  flex-shrink: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .why-use-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .perks-strip-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 28px;
+  }
+  .perk-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .why-use-section {
+    padding: 44px 20px 36px;
+  }
+  .why-use-title {
+    font-size: 25px;
+  }
+}

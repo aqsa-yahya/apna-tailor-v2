@@ -37,11 +37,11 @@ export default function Hero() {
         </p>
 
         <div className="hero-cta-row">
-          <button className="browse-btn" onClick={() => navigate('/design')}>
+          <button className="browse-btn" onClick={() => navigate('/design-builder')}>
             Start Customizing &rarr;
           </button>
 
-          <Link to="/design" className="ai-preview-btn">
+          <Link to="/design-builder" className="ai-preview-btn">
             ✨ Try AI Preview
           </Link>
         </div>
@@ -83,7 +83,7 @@ export default function Hero() {
               <li><span>Sleeves</span><strong>Lace-trimmed 3/4</strong></li>
               <li><span>Color</span><strong>Sage Green</strong></li>
             </ul>
-            <Link to="/design" className="hero-design-info-link">
+            <Link to="/design-builder" className="hero-design-info-link">
               Customize this look &rarr;
             </Link>
           </div>
