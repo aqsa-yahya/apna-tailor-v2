@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 80px;
-  height: 90px;
+  height: 66px;
   background-color: var(--bg-white);
   border-bottom: 1px solid #E3E7E2;
   position: relative;
@@ -26,8 +26,6 @@
   gap: 40px;
 }
 
-/* Default state: same muted color for every link, including Home.
-   Color only changes on hover - no permanent "active" tint. */
 .nav-links a {
   text-decoration: none;
   color: var(--text-muted);
@@ -36,7 +34,8 @@
   transition: color 0.2s ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
   color: var(--accent-hover);
   font-weight: 600;
 }
@@ -107,7 +106,7 @@
   .nav-links {
     display: none;
     position: absolute;
-    top: 90px;
+    top: 66px;
     left: 0;
     right: 0;
     background: var(--bg-white);

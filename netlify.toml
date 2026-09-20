@@ -1,0 +1,24 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# The client (src/lib/imageGen.js) calls /api/generate-image exactly the
+# way the local dev proxy (vite.config.js) exposes it - this redirect
+# routes that same path to the real Netlify function in production, so
+# no client code had to change between dev and live.
+[[redirects]]
+  from = "/api/generate-image"
+  to = "/.netlify/functions/generate-image"
+  status = 200
+
+# SPA fallback: without this, refreshing or directly opening a route
+# like /design-builder 404s, because Netlify (a static host) looks for a
+# literal dist/design-builder/index.html that doesn't exist - React
+# Router only ever sees a URL after index.html has loaded and its own JS
+# has run. This is Netlify's equivalent of the GitHub Pages 404.html
+# trick used during an earlier deployment attempt.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -15,20 +15,20 @@ export default function Navbar() {
       </Link>
 
       <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
-        <NavLink to="/" onClick={closeMenu}>Home</NavLink>
+        <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
         <NavLink to="/design" onClick={closeMenu}>Explore Designs</NavLink>
-        <NavLink to="/design#studio" onClick={closeMenu}>Design Builder</NavLink>
+        <NavLink to="/design-builder" onClick={closeMenu}>Design Builder</NavLink>
         <NavLink to="/trending-styles" onClick={closeMenu}>Trending Styles</NavLink>
 
         {/* Shown inside the dropdown on mobile only */}
-        <Link to="/design" className="ai-preview-btn-nav mobile-only" onClick={closeMenu}>
+        <Link to="/design-builder" className="ai-preview-btn-nav mobile-only" onClick={closeMenu}>
           ✨ AI Preview
         </Link>
       </div>
 
       <div className="nav-actions">
         {/* Single AI Preview CTA - replaces the old search/cart icons */}
-        <Link to="/design" className="ai-preview-btn-nav desktop-only">
+        <Link to="/design-builder" className="ai-preview-btn-nav desktop-only">
           ✨ AI Preview
         </Link>
 

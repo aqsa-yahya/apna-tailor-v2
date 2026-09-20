@@ -1,6 +1,53 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { toPng } from 'html-to-image';
 import { trendingDesigns, inspirationSites } from './trendingDesigns';
 import './TrendingStyles.css';
+
+function TrendingCard({ design }) {
+  const cardRef = useRef(null);
+  const [downloading, setDownloading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleDownload = async () => {
+    if (!cardRef.current || downloading) return;
+    setDownloading(true);
+    setError(false);
+    try {
+      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, cacheBust: true });
+      const link = document.createElement('a');
+      link.download = `${design.name.replace(/\s+/g, '-')}-design-card.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Design card export failed:', err);
+      setError(true);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <div className="trending-card">
+      <div className="trending-card-export" ref={cardRef}>
+        <img src={design.image} alt={design.name} className="trending-card-img" crossOrigin="anonymous" />
+        <div className="trending-card-body">
+          <h3>{design.name}</h3>
+          <ul className="trending-spec-list">
+            <li><span>Fabric</span><strong>{design.fabric}</strong></li>
+            <li><span>Neckline</span><strong>{design.neckline}</strong></li>
+            <li><span>Sleeves</span><strong>{design.sleeves}</strong></li>
+            <li><span>Daman</span><strong>{design.daman}</strong></li>
+            <li><span>Color</span><strong>{design.color}</strong></li>
+          </ul>
+        </div>
+      </div>
+      <button className="trending-download-btn" onClick={handleDownload} disabled={downloading}>
+        {downloading ? 'Preparing…' : '↓ Download Design Card'}
+      </button>
+      {error && <p className="trending-download-error">Couldn&apos;t prepare the card - please try again.</p>}
+    </div>
+  );
+}
 
 export default function TrendingStyles() {
   return (
@@ -12,26 +59,7 @@ export default function TrendingStyles() {
 
       <div className="trending-grid">
         {trendingDesigns.map((design) => (
-          <div key={design.id} className="trending-card">
-            <img src={design.image} alt={design.name} className="trending-card-img" />
-            <div className="trending-card-body">
-              <h3>{design.name}</h3>
-              <ul className="trending-spec-list">
-                <li><span>Fabric</span><strong>{design.fabric}</strong></li>
-                <li><span>Neckline</span><strong>{design.neckline}</strong></li>
-                <li><span>Sleeves</span><strong>{design.sleeves}</strong></li>
-                <li><span>Daman</span><strong>{design.daman}</strong></li>
-                <li><span>Color</span><strong>{design.color}</strong></li>
-              </ul>
-              <a
-                href={design.image}
-                download={`${design.name.replace(/\s+/g, '-')}.jpg`}
-                className="trending-download-btn"
-              >
-                ↓ Download Design Card
-              </a>
-            </div>
-          </div>
+          <TrendingCard key={design.id} design={design} />
         ))}
       </div>
 
