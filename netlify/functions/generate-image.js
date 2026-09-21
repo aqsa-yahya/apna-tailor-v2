@@ -1,5 +1,3 @@
-import { InferenceClient } from '@huggingface/inference';
-
 export async function handler(event) {
   const prompt = event.queryStringParameters?.prompt;
 
@@ -13,59 +11,79 @@ export async function handler(event) {
   const token = process.env.HUGGINGFACE_API_TOKEN;
 
   if (!token) {
-    console.error('HUGGINGFACE_API_TOKEN is missing');
+    console.error("HUGGINGFACE_API_TOKEN is missing");
 
     return {
       statusCode: 500,
-      body: 'Missing HUGGINGFACE_API_TOKEN',
+      body: "Missing HUGGINGFACE_API_TOKEN",
     };
   }
 
   try {
-    console.log('Starting Hugging Face image generation...');
-    console.log('Model: black-forest-labs/FLUX.1-schnell');
-    console.log('Provider: nscale');
+    console.log("Starting Nscale image generation...");
 
-    const client = new InferenceClient(token);
-
-    const imageBlob = await client.textToImage({
-      model: 'black-forest-labs/FLUX.1-schnell',
-      provider: 'nscale',
-      inputs: prompt,
-    });
-
-    console.log('Image generated successfully');
-    console.log('Content type:', imageBlob.type);
-
-    const buffer = Buffer.from(
-      await imageBlob.arrayBuffer()
+    const response = await fetch(
+      "https://router.huggingface.co/nscale/v1/images/generations",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "black-forest-labs/FLUX.1-schnell",
+          prompt: prompt,
+          response_format: "b64_json",
+        }),
+      }
     );
+
+    console.log("Nscale status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+
+      console.error("Nscale error:", errorText);
+
+      return {
+        statusCode: response.status,
+        body: `Nscale error: ${errorText}`,
+      };
+    }
+
+    const result = await response.json();
+
+    console.log("Image generated successfully");
+
+    const base64Image = result.data?.[0]?.b64_json;
+
+    if (!base64Image) {
+      console.error("No image returned:", result);
+
+      return {
+        statusCode: 502,
+        body: "Nscale returned no image",
+      };
+    }
 
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': imageBlob.type || 'image/png',
-        'Cache-Control': 'no-store',
+        "Content-Type": "image/png",
+        "Cache-Control": "no-store",
       },
-      body: buffer.toString('base64'),
+      body: base64Image,
       isBase64Encoded: true,
     };
   } catch (error) {
-    console.error('========== HUGGING FACE ERROR ==========');
-    console.error('Name:', error?.name);
-    console.error('Message:', error?.message);
-    console.error('Status:', error?.status);
-    console.error('Status Code:', error?.statusCode);
-    console.error('Response:', error?.response);
-    console.error('Cause:', error?.cause);
-    console.error('Stack:', error?.stack);
-    console.error('=========================================');
+    console.error("========== NSCALE ERROR ==========");
+    console.error("Message:", error?.message);
+    console.error("Stack:", error?.stack);
+    console.error("==================================");
 
     return {
       statusCode: 502,
-      body:
-        'Image generation failed: ' +
-        (error?.message || 'Unknown Hugging Face error'),
+      body: "Image generation failed: " + (error?.message || "Unknown error"),
     };
   }
 }
