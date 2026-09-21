@@ -22,11 +22,16 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--bg-cream);
   color: var(--text-dark);
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 img {
