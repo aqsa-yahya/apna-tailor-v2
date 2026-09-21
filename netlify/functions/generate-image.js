@@ -1,76 +1,80 @@
 import { InferenceClient } from '@huggingface/inference';
 
-/*
-  Netlify serverless function for Hugging Face image generation.
-
-  HUGGINGFACE_API_TOKEN must be configured in Netlify Environment Variables.
-  NEVER commit the actual token to the repository.
-
-  The token needs the "Inference Providers" permission.
-*/
-
 export async function handler(event) {
   const prompt = event.queryStringParameters?.prompt;
-  const seed =
-    event.queryStringParameters?.seed || String(Date.now());
 
+  // Check prompt
   if (!prompt) {
     return {
       statusCode: 400,
+      headers: {
+        'Content-Type': 'text/plain',
+      },
       body: 'Missing "prompt" query param',
     };
   }
 
+  // Get Hugging Face token from Netlify environment variables
   const token = process.env.HUGGINGFACE_API_TOKEN;
 
   if (!token) {
+    console.error('HUGGINGFACE_API_TOKEN is missing');
+
     return {
       statusCode: 500,
-      body:
-        'Missing HUGGINGFACE_API_TOKEN - set it in Netlify Environment Variables, then redeploy',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      body: 'Missing HUGGINGFACE_API_TOKEN',
     };
   }
 
   try {
+    console.log('Starting Hugging Face image generation...');
+    console.log('Model: black-forest-labs/FLUX.1-schnell');
+    console.log('Provider: nscale');
+
     const client = new InferenceClient(token);
 
-    const blob = await client.textToImage({
+    const imageBlob = await client.textToImage({
       model: 'black-forest-labs/FLUX.1-schnell',
       provider: 'nscale',
       inputs: prompt,
-      parameters: {
-        width: 768,
-        height: 1024,
-        seed: Number(seed) % 2147483647,
-      },
     });
 
-    const buffer = Buffer.from(await blob.arrayBuffer());
+    console.log('Image generated successfully');
+    console.log('Content type:', imageBlob.type);
+
+    const buffer = Buffer.from(await imageBlob.arrayBuffer());
 
     return {
       statusCode: 200,
       headers: {
-        'Content-Type': blob.type || 'image/png',
+        'Content-Type': imageBlob.type || 'image/png',
+        'Cache-Control': 'no-store',
       },
       body: buffer.toString('base64'),
       isBase64Encoded: true,
     };
-  } catch (err) {
-    console.error('Hugging Face image function error:', {
-      name: err?.name,
-      message: err?.message,
-      status: err?.status,
-      statusCode: err?.statusCode,
-      response: err?.response,
-      cause: err?.cause,
-      stack: err?.stack,
-    });
+  } catch (error) {
+    console.error('========== HUGGING FACE ERROR ==========');
+    console.error('Name:', error?.name);
+    console.error('Message:', error?.message);
+    console.error('Status:', error?.status);
+    console.error('Status Code:', error?.statusCode);
+    console.error('Response:', error?.response);
+    console.error('Cause:', error?.cause);
+    console.error('Stack:', error?.stack);
+    console.error('=========================================');
 
     return {
       statusCode: 502,
+      headers: {
+        'Content-Type': 'text/plain',
+      },
       body:
-        'Image proxy error: ' +
-        (err?.message || 'Unknown error'),
+        'Image generation failed: ' +
+        (error?.message || 'Unknown Hugging Face error'),
     };
   }
 }
