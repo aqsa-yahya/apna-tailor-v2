@@ -26,18 +26,13 @@ export async function handler(event) {
     console.log('Model: black-forest-labs/FLUX.1-schnell');
     console.log('Provider: nscale');
 
-    // Provider is configured on the client
-    const client = new InferenceClient({
-      provider: 'nscale',
-      apiKey: token,
-    });
+    const client = new InferenceClient(token);
 
-    const imageBlob = await client.textToImage(
-      prompt,
-      {
-        model: 'black-forest-labs/FLUX.1-schnell',
-      }
-    );
+    const imageBlob = await client.textToImage({
+      model: 'black-forest-labs/FLUX.1-schnell',
+      provider: 'nscale',
+      inputs: prompt,
+    });
 
     console.log('Image generated successfully');
     console.log('Content type:', imageBlob.type);
@@ -55,7 +50,6 @@ export async function handler(event) {
       body: buffer.toString('base64'),
       isBase64Encoded: true,
     };
-
   } catch (error) {
     console.error('========== HUGGING FACE ERROR ==========');
     console.error('Name:', error?.name);
