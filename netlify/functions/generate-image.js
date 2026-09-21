@@ -40,9 +40,7 @@ export async function handler(event) {
     console.log("Image generated successfully");
     console.log("Content type:", imageBlob.type);
 
-    const buffer = Buffer.from(
-      await imageBlob.arrayBuffer()
-    );
+    const buffer = Buffer.from(await imageBlob.arrayBuffer());
 
     return {
       statusCode: 200,
@@ -54,20 +52,25 @@ export async function handler(event) {
       isBase64Encoded: true,
     };
   } catch (error) {
+    // Asli status aur body httpResponse ke andar hote hain
+    const status = error?.httpResponse?.status;
+    const body = error?.httpResponse?.body;
+
     console.error("========== HUGGING FACE ERROR ==========");
     console.error("Name:", error?.name);
     console.error("Message:", error?.message);
-    console.error("Status:", error?.status);
-    console.error("Status Code:", error?.statusCode);
-    console.error("Response:", error?.response);
-    console.error("Stack:", error?.stack);
+    console.error("HTTP status:", status);
+    console.error("HTTP body:", JSON.stringify(body));
+    console.error("Request URL:", error?.httpRequest?.url);
     console.error("=========================================");
 
     return {
       statusCode: 502,
       body:
-        "Image generation failed: " +
-        (error?.message || "Unknown Hugging Face error"),
+        `Image generation failed (HTTP ${status ?? "unknown"}): ` +
+        (typeof body === "string"
+          ? body
+          : JSON.stringify(body ?? error?.message ?? "Unknown Hugging Face error")),
     };
   }
 }
