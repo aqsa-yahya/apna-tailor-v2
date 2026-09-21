@@ -3,18 +3,13 @@ import { InferenceClient } from '@huggingface/inference';
 export async function handler(event) {
   const prompt = event.queryStringParameters?.prompt;
 
-  // Check prompt
   if (!prompt) {
     return {
       statusCode: 400,
-      headers: {
-        'Content-Type': 'text/plain',
-      },
       body: 'Missing "prompt" query param',
     };
   }
 
-  // Get Hugging Face token from Netlify environment variables
   const token = process.env.HUGGINGFACE_API_TOKEN;
 
   if (!token) {
@@ -22,9 +17,6 @@ export async function handler(event) {
 
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'text/plain',
-      },
       body: 'Missing HUGGINGFACE_API_TOKEN',
     };
   }
@@ -34,18 +26,25 @@ export async function handler(event) {
     console.log('Model: black-forest-labs/FLUX.1-schnell');
     console.log('Provider: nscale');
 
-    const client = new InferenceClient(token);
-
-    const imageBlob = await client.textToImage({
-      model: 'black-forest-labs/FLUX.1-schnell',
+    // Provider is configured on the client
+    const client = new InferenceClient({
       provider: 'nscale',
-      inputs: prompt,
+      apiKey: token,
     });
+
+    const imageBlob = await client.textToImage(
+      prompt,
+      {
+        model: 'black-forest-labs/FLUX.1-schnell',
+      }
+    );
 
     console.log('Image generated successfully');
     console.log('Content type:', imageBlob.type);
 
-    const buffer = Buffer.from(await imageBlob.arrayBuffer());
+    const buffer = Buffer.from(
+      await imageBlob.arrayBuffer()
+    );
 
     return {
       statusCode: 200,
@@ -56,6 +55,7 @@ export async function handler(event) {
       body: buffer.toString('base64'),
       isBase64Encoded: true,
     };
+
   } catch (error) {
     console.error('========== HUGGING FACE ERROR ==========');
     console.error('Name:', error?.name);
@@ -69,9 +69,6 @@ export async function handler(event) {
 
     return {
       statusCode: 502,
-      headers: {
-        'Content-Type': 'text/plain',
-      },
       body:
         'Image generation failed: ' +
         (error?.message || 'Unknown Hugging Face error'),
